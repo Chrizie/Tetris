@@ -4,14 +4,24 @@ import static org.lwjgl.opengl.GL40.*;
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.opengl.GL;
 
+import Listeners.MouseListener;
+
 
 
 public class Window 
 {
 	private static Window instance = null;
 	private long windowID;
+	private int width;
+	private int height;
+	private String title;
 	
-	private Window() {};
+	private Window()
+	{
+		this.width = 800;
+		this.height = 1000;
+		this.title = "Tetris";
+	}
 	
 	
 	public static Window get()
@@ -28,6 +38,11 @@ public class Window
 	{
 		init();
 		loop();
+		
+		glfwDestroyWindow(windowID);
+		
+		glfwTerminate();
+		glfwSetErrorCallback(null).free();
 	}
 
 	
@@ -40,7 +55,11 @@ public class Window
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		
-		windowID = glfwCreateWindow(800, 600, "Tetris", 0, 0);
+		windowID = glfwCreateWindow(this.width, this.height, this.title ,0, 0);
+		/* TODO Funktioniert nicht
+		glfwSetCursorPosCallback(windowID, MouseListener::mousePositionCallback);
+		*/
+		
 		glfwMakeContextCurrent(windowID);
 		GL.createCapabilities();
 		
